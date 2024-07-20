@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\game;
 use App\Http\Requests\StoregameRequest;
 use App\Http\Requests\UpdategameRequest;
+use App\Models\Game;
 
 class GameController extends Controller
 {
@@ -13,11 +13,9 @@ class GameController extends Controller
      */
     public function index()
     {
-        $data = game::orderBy('id', 'asc')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Sukses! data ditemukam',
-            'data' => $data,
+        $data = Game::orderBy('id', 'asc')->get();
+        return view('game.index', [
+            'data' => $data
         ]);
     }
 
@@ -38,7 +36,7 @@ class GameController extends Controller
             'name' => 'required',
         ]);
 
-        $game = new game();
+        $game = new Game();
         $game->name = $request->name;
         $game->save();
 
@@ -53,8 +51,8 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $data = game::find($id);
-        if($data){
+        $data = Game::find($id);
+        if ($data) {
             return response()->json([
                 'status' => true,
                 'message' => 'Sukses! data ditemukam',
@@ -71,9 +69,11 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(game $game)
+    public function edit(Game $game)
     {
-        //
+        return view('game.edit', [
+            'data' => $game,
+        ]);
     }
 
     /**
@@ -85,8 +85,8 @@ class GameController extends Controller
             'name' => 'required',
         ]);
 
-        $game = game::find($id);
-        if($game) {
+        $game = Game::find($id);
+        if ($game) {
             $game->name = $request->name;
             $game->save();
 
@@ -107,8 +107,8 @@ class GameController extends Controller
      */
     public function destroy($id)
     {
-        $game = game::find($id);
-        if($game) {
+        $game = Game::find($id);
+        if ($game) {
             $game->delete();
             return response()->json([
                 'status' => true,

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\informasi;
 use App\Http\Requests\StoreinformasiRequest;
 use App\Http\Requests\UpdateinformasiRequest;
+use App\Models\Informasi;
 
 class InformasiController extends Controller
 {
@@ -13,10 +13,9 @@ class InformasiController extends Controller
      */
     public function index()
     {
-        $data = informasi::orderBy('id', 'asc')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Sukses! data ditemukam',
+        $data = Informasi::orderBy('id', 'asc')->get();
+        // dd($data);
+        return view('infomasi.index',[
             'data' => $data,
         ]);
     }
@@ -41,10 +40,10 @@ class InformasiController extends Controller
             'telegram' => 'required',
             'tiktok' => 'required',
             'wa' => 'required',
-            'email' => 'required|string|email',
+            'email' => 'required',
         ]);
 
-        $informasi = new informasi();
+        $informasi = new Informasi();
         $informasi->body = $request->body;
         $informasi->fb = $request->fb;
         $informasi->ig = $request->ig;
@@ -65,7 +64,7 @@ class InformasiController extends Controller
      */
     public function show($id)
     {
-        $data = informasi::find($id);
+        $data = Informasi::find($id);
         if($data){
             return response()->json([
                 'status' => true,
@@ -83,9 +82,12 @@ class InformasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(informasi $informasi)
+    public function edit($id)
     {
-        //
+        $data = Informasi::find($id);
+        return view('infomasi.edit',[
+            'data' => $data,
+        ]);
     }
 
     /**
