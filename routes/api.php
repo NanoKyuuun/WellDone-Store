@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\RankController;
+use App\Http\Controllers\WorkerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('informasi', InformasiController::class);
-Route::apiResource('game', GameController::class);
+Route::apiResource('/informasi', InformasiController::class);
+Route::apiResource('/game', GameController::class);
+Route::apiResource('/rank', RankController::class);
+Route::apiResource('/worker', WorkerController::class);
