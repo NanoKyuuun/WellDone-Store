@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/register', [AuthController::class,'registView'])->middleware('guest')->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -57,3 +57,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/{order}/edit', [OrderController::class, 'edit']);
 });
 
+Route::get('/verify', [AuthController::class, 'verifyView'])->name('verification.notice');
+Route::post('/verify', [AuthController::class, 'verifyCode'])->name('verification.verify');
