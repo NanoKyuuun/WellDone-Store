@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaketController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Http\Request;
@@ -26,3 +28,5 @@ Route::apiResource('/informasi', InformasiController::class);
 Route::apiResource('/game', GameController::class);
 Route::apiResource('/rank', RankController::class);
 Route::apiResource('/worker', WorkerController::class);
+Route::apiResource('/paket', PaketController::class);
+Route::apiResource('/order', OrderController::class);

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Table</title>
+    <title>Simple Table Order</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         table {
@@ -28,6 +28,14 @@
 <body>
     <h2>Submit Information</h2>
     <form id="infoForm">
+        <label for="user">user</label>
+        <select name="user_id" id="user">
+            <option value="" selected>Select user</option>
+            @foreach ($user as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select><br><br>
+
         <label for="game">Game</label>
         <select name="game_id" id="game">
             <option value="" selected>Select Game</option>
@@ -35,11 +43,49 @@
                 <option value="{{ $item->id }}">{{ $item->name }}</option>
             @endforeach
         </select><br><br>
-        <label for="name">name:</label>
-        <input type="text" id="name" name="name" required><br><br>
 
-        <label for="harga">harga:</label>
-        <input type="text" id="harga" name="harga"><br><br>
+        <label for="rank">Rank</label>
+        <select name="rank_id" id="rank">
+            <option value="" selected>Select rank</option>
+            @foreach ($rank as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select><br><br>
+
+        <label for="paket">paket</label>
+        <select name="paket_id" id="paket">
+            <option value="" selected>Select paket</option>
+            @foreach ($paket as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select><br><br>
+
+        <label for="rank_awal">rank_awal:</label>
+        <input type="text" id="rank_awal" name="rank_awal" required><br><br>
+
+        <label for="rank_tujuan">rank_tujuan:</label>
+        <input type="text" id="rank_tujuan" name="rank_tujuan"><br><br>
+
+        <label for="bintang">bintang:</label>
+        <input type="text" id="bintang" name="bintang"><br><br>
+
+        <label for="catatan">catatan:</label>
+        <input type="text" id="catatan" name="catatan"><br><br>
+
+        <label for="req_hero">req_hero:</label>
+        <input type="text" id="req_hero" name="req_hero"><br><br>
+
+        <label for="password">password:</label>
+        <input type="text" id="password" name="password"><br><br>
+
+        <label for="methode_login">methode_login:</label>
+        <input type="text" id="methode_login" name="methode_login"><br><br>
+
+        <label for="email">email:</label>
+        <input type="text" id="email" name="email"><br><br>
+
+        <label for="no_wa">no_wa:</label>
+        <input type="text" id="no_wa" name="no_wa"><br><br>
 
         <button type="submit">Submit</button>
     </form>
@@ -48,9 +94,19 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>user</th>
                 <th>game</th>
-                <th>name</th>
-                <th>harga</th>
+                <th>rank</th>
+                <th>paket</th>
+                <th>rank_awal</th>
+                <th>rank_tujuan</th>
+                <th>bintang</th>
+                <th>catatan</th>
+                <th>req_hero</th>
+                <th>password</th>
+                <th>methode_login</th>
+                <th>email</th>
+                <th>no_wa</th>
                 <th>action</th>
             </tr>
         </thead>
@@ -58,11 +114,21 @@
             @foreach ($data as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item->user->name }}</td>
                     <td>{{ $item->game->name }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->harga }}</td>
+                    <td>{{ $item->rank->name }}</td>
+                    <td>{{ $item->paket->name }}</td>
+                    <td>{{ $item->rank_awal }}</td>
+                    <td>{{ $item->rank_tujuan }}</td>
+                    <td>{{ $item->bintang }}</td>
+                    <td>{{ $item->catatan }}</td>
+                    <td>{{ $item->req_hero }}</td>
+                    <td>{{ $item->password }}</td>
+                    <td>{{ $item->methode_login }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->no_wa }}</td>
                     <td>
-                        <a href="/rank/{{ $item->id }}/edit"> edit</a>
+                        <a href="/order/{{ $item->id }}/edit"> edit</a>
                         <form id="deleteForm">
                             <input type="hidden" id="id" name="id" required
                                 value="{{ $item->id }}"><br><br>
@@ -79,7 +145,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: '/api/rank',
+                    url: '/api/order',
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
@@ -101,7 +167,7 @@
                 const id = $('#id').val();
 
                 $.ajax({
-                    url: `/api/rank/${id}`,
+                    url: `/api/order/${id}`,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}' // Laravel CSRF token

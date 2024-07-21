@@ -14,4 +14,12 @@ class Rank extends Model
     public function game(){
         return $this->belongsTo(Game::class);
     }
+
+    public function paket(){
+        return $this->hasMany(Paket::class);
+    }
+
+    public function order(){
+        return $this->hasMany(Order::class);
+    }
 }

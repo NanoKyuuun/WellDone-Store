@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaketController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\WorkerController;
 use App\Models\Worker;
@@ -23,15 +25,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/register', [AuthController::class,'registView'])->middleware('guest');
+Route::get('/register', [AuthController::class,'registView'])->middleware('guest')->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::get('/login', [AuthController::class, 'loginView'])->middleware('guest');
+Route::get('/login', [AuthController::class, 'loginView'])->middleware('guest')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
@@ -47,5 +49,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/worker', [WorkerController::class, 'index']);
     Route::get('/worker/{worker}/edit', [WorkerController::class, 'edit']);
+
+    Route::get('/paket', [PaketController::class, 'index']);
+    Route::get('/paket/{paket}/edit', [PaketController::class, 'edit']);
+
+    Route::get('/order', [OrderController::class, 'index']);
+    Route::get('/order/{order}/edit', [OrderController::class, 'edit']);
 });
 
