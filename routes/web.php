@@ -7,7 +7,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\WorkerController;
-use App\Models\Worker;
 use Illuminate\Support\Facades\Route;
 
 /*

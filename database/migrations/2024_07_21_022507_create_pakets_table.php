@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rank_id')->constrained('rank')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('bintang');
             $table->string('harga');
             $table->string('disc');
             $table->text('descripsi');
+            $table->enum('status', ['active', 'non-aktif']);
             $table->timestamps();
         });
     }

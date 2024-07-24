@@ -17,11 +17,21 @@ class PaketController extends Controller
         $data = Paket::with('rank')->get();
         $rank = Rank::all();
 
+        foreach ($data as $key => $item) {
+            if ($item->disc != null) {
+                $discAmount = $item->harga * $item->disc / 100;
+                $item->harga_total = $item->harga - $discAmount;
+            } else {
+                $item->harga_total = $item->harga;
+            }
+        }
+
         return view('paket.index', [
             'data' => $data,
             'rank' => $rank,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

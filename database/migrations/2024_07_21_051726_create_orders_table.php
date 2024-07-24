@@ -22,10 +22,12 @@ return new class extends Migration
             $table->string('bintang');
             $table->string('catatan')->nullable();
             $table->string('req_hero');
+            $table->string('email');
             $table->string('password');
             $table->string('methode_login');
-            $table->string('email')->unique();
-            $table->text('no_wa')->unique();
+            $table->text('no_wa');
+            $table->enum('order_status',['pending','in progress','complete','canceled'])->default('pending');
+            $table->enum('payment_status',['pending','complete','failed'])->default('pending');
             $table->timestamps();
         });
     }

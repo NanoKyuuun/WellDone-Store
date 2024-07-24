@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('no_wa')->unique();
             $table->string('email')->unique();
+            $table->enum('status', ['active', 'non-aktif']);
             $table->timestamps();
         });
     }
