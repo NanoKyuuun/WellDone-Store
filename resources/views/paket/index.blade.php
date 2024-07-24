@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Table Peket</title>
+    <title>Simple Table Paket</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         table {
@@ -12,8 +12,7 @@
             border-collapse: collapse;
         }
 
-        th,
-        td {
+        th, td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
@@ -42,7 +41,7 @@
         <input type="text" id="bintang" name="bintang"><br><br>
 
         <label for="harga">harga:</label>
-        <input type="text" id="harga" name="harga"><br><br>
+        <input type="text" id="harga" name="harga" required><br><br>
 
         <label for="disc">disc:</label>
         <input type="text" id="disc" name="disc"><br><br>
@@ -52,6 +51,7 @@
 
         <button type="submit">Submit</button>
     </form>
+
     <h2>Data Table</h2>
     <table>
         <thead>
@@ -62,6 +62,7 @@
                 <th>bintang</th>
                 <th>harga</th>
                 <th>disc</th>
+                <th>harga total</th>
                 <th>descripsi</th>
                 <th>action</th>
             </tr>
@@ -75,12 +76,13 @@
                     <td>{{ $item->bintang }}</td>
                     <td>{{ $item->harga }}</td>
                     <td>{{ $item->disc }}</td>
+                    <td>{{ $item->harga_total }}</td>
                     <td>{{ $item->descripsi }}</td>
                     <td>
-                        <a href="/paket/{{ $item->id }}/edit"> edit</a>
-                        <form id="deleteForm">
-                            <input type="hidden" id="id" name="id" required
-                                value="{{ $item->id }}"><br><br>
+                        <a href="/paket/{{ $item->id }}/edit">edit</a>
+                        <form class="deleteForm" method="POST" action="/api/paket/{{ $item->id }}">
+                            @csrf
+                            @method('DELETE')
                             <button type="submit">Delete</button>
                         </form>
                     </td>
@@ -88,6 +90,7 @@
             @endforeach
         </tbody>
     </table>
+
     <script>
         $(document).ready(function() {
             $('#infoForm').on('submit', function(e) {
@@ -100,6 +103,7 @@
                     success: function(response) {
                         alert('Form submitted successfully!');
                         console.log(response);
+                        location.reload(); // Reload the page to show the new data
                     },
                     error: function(xhr) {
                         alert('An error occurred!');
@@ -107,23 +111,20 @@
                     }
                 });
             });
-        });
 
-        $(document).ready(function() {
-            $('#deleteForm').on('submit', function(e) {
+            $('.deleteForm').on('submit', function(e) {
                 e.preventDefault();
 
-                const id = $('#id').val();
+                const form = $(this);
 
                 $.ajax({
-                    url: `/api/paket/${id}`,
+                    url: form.attr('action'),
                     type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}' // Laravel CSRF token
-                    },
+                    data: form.serialize(),
                     success: function(response) {
                         alert('Item deleted successfully!');
                         console.log(response);
+                        location.reload(); // Reload the page to show the updated data
                     },
                     error: function(xhr) {
                         alert('An error occurred!');
@@ -132,7 +133,6 @@
                 });
             });
         });
-    </script>
     </script>
 </body>
 

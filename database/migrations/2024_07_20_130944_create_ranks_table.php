@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('game_id')->constrained('games')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('harga');
+            $table->enum('status',['active', 'non-aktif'])->default('non-aktif');
             $table->timestamps();
         });
     }

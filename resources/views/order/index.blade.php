@@ -56,9 +56,10 @@
         <select name="paket_id" id="paket">
             <option value="" selected>Select paket</option>
             @foreach ($paket as $item)
-                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                <option value="{{ $item->id }}" data-game="{{ $item->rank->game->id }}"
+                    data-rank="{{ $item->rank->id }}">{{ $item->name }}</option>
             @endforeach
-        </select><br><br>
+        </select><br><br> 
 
         <label for="rank_awal">rank_awal:</label>
         <input type="text" id="rank_awal" name="rank_awal" required><br><br>
@@ -129,11 +130,7 @@
                     <td>{{ $item->no_wa }}</td>
                     <td>
                         <a href="/order/{{ $item->id }}/edit"> edit</a>
-                        <form id="deleteForm">
-                            <input type="hidden" id="id" name="id" required
-                                value="{{ $item->id }}"><br><br>
-                            <button type="submit">Delete</button>
-                        </form>
+                        <a href="#" data-id="{{ $item->id }}" class="btn btn-danger btn-hapus">hapus</a>
                     </td>
                 </tr>
             @endforeach
@@ -160,30 +157,41 @@
             });
         });
 
-        $(document).ready(function() {
-            $('#deleteForm').on('submit', function(e) {
-                e.preventDefault();
+        $(document).on('click', '.btn-hapus', function() {
+            const id = $(this).data('id')
+            const token = localStorage.getItem('token')
 
-                const id = $('#id').val();
+            confirm_dialog = confirm('Apakah anda yakin?');
 
+            if (confirm_dialog) {
                 $.ajax({
-                    url: `/api/order/${id}`,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}' // Laravel CSRF token
+                    url: '/api/order/' + id,
+                    type: "DELETE",
+                    headers: {
+                        "Authorization": 'Bearer ' + token
                     },
                     success: function(response) {
-                        alert('Item deleted successfully!');
+                        alert('Form submitted successfully!');
                         console.log(response);
                     },
-                    error: function(xhr) {
-                        alert('An error occurred!');
-                        console.log(xhr.responseText);
-                    }
                 });
-            });
+            }
         });
-    </script>
+        document.getElementById('paket').addEventListener('change', function() {
+            const selectedPaket = this.options[this.selectedIndex];
+            const gameId = selectedPaket.getAttribute('data-game');
+            const rankId = selectedPaket.getAttribute('data-rank');
+
+            // Update game dropdown
+            const gameDropdown = document.getElementById('game');
+            gameDropdown.value = gameId;
+            gameDropdown.disabled = true; // Make read-only
+
+            // Update rank dropdown
+            const rankDropdown = document.getElementById('rank');
+            rankDropdown.value = rankId;
+            rankDropdown.disabled = true; // Make read-only
+        });
     </script>
 </body>
 

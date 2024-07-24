@@ -21,8 +21,8 @@ class OrderController extends Controller
         $user = User::all();
         $game = Game::all();
         $rank = Rank::all();
-        $paket = Paket::all();
-
+        $paket = Paket::with('rank.game')->get();
+        // dd($paket);
         return view('order.index', [
             'data' => $data,
             'user' => $user,
